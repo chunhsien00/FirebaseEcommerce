@@ -1,9 +1,12 @@
-import React, { Component } from 'react'
-import { Link } from 'react-router-dom'
+import React, { useState, useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { Link,withRouter } from 'react-router-dom'
+import { signInUser, signInWithGoogle, resetAllAuthForms } from './../../redux/User/user.actions'
+
 
 import './styles.scss'
 import Buttons from './../forms/Button'
-import { signInWithGoogle, auth } from './../../firebase/utils'
+// import { signInWithGoogle, auth } from './../../firebase/utils'
 
 import AuthWrapper from './../AuthWrapper'
 import FormInput from './../forms/FormInput'
@@ -11,47 +14,48 @@ import Button from './../forms/Button'
 
 
 
-const initialState = {
-    email:'',
-    password:''
-}
+const mapState = ({user}) => ({
+    signInSuccess: user.signInSuccess
+})
 
 
 
-class SignIn extends Component {
-    constructor(props){
-        super(props)
-        this.state = {
-            ...initialState
+const SignIn = props => {
+    const{ signInSuccess } = useSelector(mapState)
+    const dispatch = useDispatch()
+    const [ email, setEmail ] = useState('')
+    const [ password, setPassword ] = useState('')
+
+
+    useEffect(()=>{
+        if(signInSuccess){
+            resetForm()
+            dispatch(resetAllAuthForms())
+            props.history.push('/')
         }
+    },[signInSuccess])
 
-        this.handleChange = this.handleChange.bind(this)
-    }
 
-    handleChange(e){
-        const { name, value } = e.target
-        this.setState({
-            [name]:value
-        })
+    const resetForm = () => {
+        setEmail('')
+        setPassword('')
     }
     
-    handleSubmit = async e => {
+    const handleSubmit =  e => {
         e.preventDefault()
-        const { email, password } = this.state
+        dispatch(signInUser({email, password}))
 
-        try{
-            await auth.signInWithEmailAndPassword( email, password)
-            this.setState({
-                ...initialState
-            })
-        }catch(err){
-            //console.log(err)
-        }
+        //     resetForm()
+        //     props.history.push('/')
+  
     }
 
-    render(){
+    const handleGoogleSignIn = () => {
+        dispatch(signInWithGoogle())
+    }
 
-        const { email, password } = this.state
+
+
 
         const  configAuthWrapper = {
             headline: 'LogIn'
@@ -60,28 +64,23 @@ class SignIn extends Component {
         return (
 
             <AuthWrapper {... configAuthWrapper}>
-                <div className="signin">
-                    <div className="wrap">
-                        <h2>
-                            LogIn
-                        </h2>
-
+ 
                         <div className="formWrap">
-                        <form onSubmit={this.handleSubmit}>
+                        <form onSubmit={handleSubmit}>
 
                             <FormInput
                                 type="email"
                                 name="email"
                                 value={email}
                                 placeholder="Email"
-                                handleChange={this.handleChange}
+                                handleChange={e => setEmail(e.target.value)}
                             />
                             <FormInput
                                 type="password"
                                 name="password"
                                 value={password}
                                 placeholder="Password"
-                                handleChange={this.handleChange}
+                                handleChange={e => setPassword(e.target.value)} 
                             />
                             <Button type="submit ">
                                 Login
@@ -89,7 +88,7 @@ class SignIn extends Component {
                             
                             <div className="socialSignin">
                                 <div className="row">
-                                    <Buttons onClick={signInWithGoogle}>
+                                    <Buttons onClick={handleGoogleSignIn}>
                                         Sign in with Google
                                     </Buttons>
                                 </div>
@@ -102,12 +101,8 @@ class SignIn extends Component {
                             </div>
                         </form>
                         </div>
-                    </div>
-                </div>
             </AuthWrapper>
         )
-    }
-    
 }
 
-export default SignIn
+export default withRouter(SignIn)

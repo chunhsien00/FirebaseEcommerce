@@ -14,7 +14,7 @@ GoogleProvider.setCustomParameters({ prompt: 'select_account' })
 // export const signInWithGoogle = () => auth.signInWithPopup(GoogleProvider)
 
 
-export const handleUserProfile = async (userAuth, additionalDate) => {
+export const handleUserProfile = async ({userAuth, additionalDate}) => {
     if(!userAuth) return
     const { uid } = userAuth
 
@@ -24,19 +24,28 @@ export const handleUserProfile = async (userAuth, additionalDate) => {
     if(!snapshot.exists){
         const { displayName, email } = userAuth
         const timestamp = new Date()
+        const userRoles = ['user']
 
         try{
             await userRef.set({
                 displayName,
                 email,
-                createDate:timestamp,
+                createDate: timestamp,
+                userRoles,
                 ...additionalDate
             })
         }catch(err){
             //console.log(err)
         }
     }
+    return userRef   
+}
 
-    return userRef
-     
+export const getCurrentUser = () => {
+    return new Promise((resolve, reject) => {
+        const unsubscribe = auth.onAuthStateChanged(userAuth => {
+            unsubscribe()
+            resolve(userAuth)
+        }, reject)
+    })
 }

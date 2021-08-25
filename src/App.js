@@ -1,22 +1,31 @@
 import React,{  useEffect} from 'react'
-import { useSelector, useDispatch} from 'react-redux'
-import { Switch, Route, Redirect } from 'react-router-dom'
-import { auth, handleUserProfile } from './firebase/utils'
-import { setCurrentUser} from './redux/User/user.actions'
+import { useDispatch} from 'react-redux'
+import { Switch, Route} from 'react-router-dom'
+// import { auth, handleUserProfile } from './firebase/utils'
+import { checkUserSession} from './redux/User/user.actions'
+
+
+//components
+import AdminToolbar from './components/AdminToolbar'
 
 //hoc
 import WithAuth from './hoc/withAuth'
-
+import WithAdminAuth from './hoc/withAdminAuth'
 //layouts
 import MainLayout from './layouts/MainLayout'
 import HomepageLayout from './layouts/HomepageLayout'
-//pages
+import AdminLayout from './layouts/AdminLayout'
 
+//pages
 import Homepage from './pages/Homepage'
+import Search from './pages/Search'
 import Registration from './pages/Registration'
 import Login from './pages/Login'
 import Recovery from './pages/Recovery'
 import Dashboard from './pages/Dashboard'
+import Admin from './pages/Admin'
+import ProductDetails from './pages/ProductDetails'
+import Cart from './pages/Cart'
 import './default.scss'
 
 
@@ -24,65 +33,46 @@ import './default.scss'
 const App = props => {
   const dispatch = useDispatch()
 
-  // const { setCurrentUser} = props
 
-  useEffect(() => {
+  useEffect(() => { 
+    dispatch(checkUserSession())
+  },[dispatch])
 
-    const authListener = auth.onAuthStateChanged( async userAuth => {
-      if(userAuth) {
-        const userRef = await handleUserProfile(userAuth)
-        userRef.onSnapshot(snapshot => {
-          dispatch(setCurrentUser({         
-              id: snapshot.id,
-              ...snapshot.data()    
-          }))
-        })
-      }   
-
-      dispatch(setCurrentUser(userAuth))                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   
-    })
-
-    return()=>{
-      authListener()
-    }
-  },[])
-
-  // componentDidMount(){
-
-  //   const { setCurrentUser } = this.props
-
-  //   this.authListener = auth.onAuthStateChanged( async userAuth => {
-  //     if(userAuth) {
-  //       const userRef = await handleUserProfile(userAuth)
-  //       userRef.onSnapshot(snapshot => {
-  //         this.props.setCurrentUser({
-  //           currentUser:{
-  //             id: snapshot.id,
-  //             ...snapshot.data()
-  //           }
-  //         })
-  //       })
-  //     }   
-
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                
-  //   })
-  // }
-
-  // componentWillUnmount(){
-  //   this.authListener()
-  // }
-
-  
-    // const{ currentUser } = this.props
 
     return (
       <div className="App">   
+          <AdminToolbar/>
+
           <Switch>
             <Route exact path="/" render={() => (
               <HomepageLayout >
                 <Homepage/>
               </HomepageLayout>
-            )}/>
+            )}/>      
+            <Route exact path="/search" render={() => (
+              <MainLayout>
+                <Search/>
+              </MainLayout>
+            )}
+            />
+            <Route path="/search/:filterType" render={() => (
+              <MainLayout>
+                <Search/>
+              </MainLayout>
+            )}
+            />
+            <Route path="/product/:productID" render={() => (
+              <MainLayout>
+                <ProductDetails/>
+              </MainLayout>
+            )}
+            />
+            <Route path="/cart" render={() => (
+              <MainLayout>
+                <Cart/>
+              </MainLayout>
+            )}
+            />
             <Route path="/registration" render={() => (
               <MainLayout >
                 <Registration/>
@@ -104,6 +94,14 @@ const App = props => {
                   <Dashboard/>
                 </MainLayout>
               </WithAuth>
+            )}/>
+
+            <Route path="/admin" render={()=>(
+              <WithAdminAuth>
+                <AdminLayout>
+                  <Admin/>
+                </AdminLayout>
+              </WithAdminAuth>
             )}/>
           </Switch> 
       </div>

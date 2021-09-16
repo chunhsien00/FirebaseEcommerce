@@ -4,8 +4,6 @@ import { Switch, Route} from 'react-router-dom'
 // import { auth, handleUserProfile } from './firebase/utils'
 import { checkUserSession} from './redux/User/user.actions'
 
-
-
 //components
 import AdminToolbar from './components/AdminToolbar'
 

@@ -12,14 +12,14 @@ const Product = (product) => {
         documentID,
         productThumbnail, 
         productName, 
-        productPrice
+        productPrice,
     } = product
 
     if (!documentID || !productThumbnail || !productName || 
         typeof productPrice === 'undefined') return null;
 
     const configAddToCartBtn = {
-        type: 'button'
+        type:'button'
     }
 
     const handleAddToCart = ( product ) => {

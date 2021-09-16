@@ -24,27 +24,27 @@ const ProductCard = ({}) => {
         productPrice,
         productDesc 
     } = product
-    
+
     useEffect(() => {
         dispatch(
             fetchProductStart(productID)
         )
-
         return() => {
             dispatch(
                 setProduct({})
             )
         }
-
     }, [])
 
-    const handleAddToCart = (product) => {
-        if (!product) return
+
+    const handleAddToCart = ( product ) => {
+        if(!product) return
         dispatch(
             addProduct(product)
         )
         history.push('/cart')
     }
+
 
     const configAddToCartBtn = {
         type:'button'

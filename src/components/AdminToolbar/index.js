@@ -17,7 +17,7 @@ const AdminToolbar = props => {
     return (
         <div className="adminToolbar">
             <ul>
-                <li>
+                <li >
                     <Link to="/admin">
                         My admin
                     </Link>

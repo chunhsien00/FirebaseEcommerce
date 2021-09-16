@@ -5,7 +5,7 @@ import './styles.scss'
 
 const Directory = props => {
     return(
-        <div className="directory">
+        <div className="directory" >
             <div className="wrap">
             
                 <div 
@@ -18,6 +18,7 @@ const Directory = props => {
                         shop1
                     </a>
                 </div>
+                
                 <div 
                 className="item"
                 style={{

@@ -30,77 +30,88 @@ const Checkout = ({ }) => {
                 
                 <table border="0" cellPadding="0" cellSpacing="0">
                     <tbody>
-
                         <tr>
-                            <table className="checkoutHeader" border="0" cellPadding="0" cellSpacing="0">
-                                <tbody>
+                            <td>
+                                <table className="checkoutHeader" border="0" cellPadding="10" cellSpacing="0">
+                                    <tbody>
                                     <tr>
                                         <th>
-                                            Product
+                                        Product
                                         </th>
                                         <th>
-                                            Description
+                                        Description
                                         </th>
                                         <th>
-                                            quantity
+                                        Quantity
                                         </th>
                                         <th>
-                                            Price
+                                        Price
                                         </th>
                                         <th>
-                                            Remove
+                                        Remove
                                         </th>
                                     </tr>
-                                </tbody>
-                            </table>
+                                    </tbody>
+                                </table>
+                            </td>
                         </tr>
 
                         <tr>
+                            <td>
                             <table border="0" cellSpacing="0" cellPadding="0">
                                 <tbody>
-                                    {cartItems.map((item, pos) => {
-                                        return (
-                                            <tr key={pos}>
-                                                <td>
-                                                    <Item {...item}/>
-                                                </td>
-                                            </tr>
-                                        )
-                                    })}
+                                {cartItems.map((item, pos) => {
+                                    return (
+                                    <tr key={pos}>
+                                        <td>
+                                        <Item {...item} />
+                                        </td>
+                                    </tr>
+                                    );
+                                })}
                                 </tbody>
                             </table>
+                            </td>
                         </tr>
 
                         <tr>
-                            <table algin="right" border="0" cellSpacing="0" cellPadding="10">
-                                    <tr align="right">
-                                        <td>
-                                            <h3>
-                                                Total:${total}
-                                            </h3>
-                                        </td>
-                                    </tr>
-                            </table>
-                        </tr>
-                        <tr>
-                            <table border="0" cellPadding="10" cellSpacing="0">
+                            <td>    
+                                <table algin="right" border="0" cellSpacing="0" cellPadding="10">
                                     <tbody>
-                                        <tr>
+                                        <tr align="right">
                                             <td>
-                                                <Button onClick={() => history.goBack()}>
-                                                    Continue Shopping
-                                                </Button>
-                                            </td>
-                                            <td>
-                                                <Button>
-                                                    Checkout
-                                                </Button>
+                                                <h3>
+                                                    Total:${total}
+                                                </h3>
                                             </td>
                                         </tr>
                                     </tbody>
-                            </table>
+                                </table>
+                            </td>
+                        </tr>
+                        
+                        <tr>
+                            <td>
+                                <table border="0" cellPadding="10" cellSpacing="0">
+                                        <tbody>
+                                            <tr>
+                                                <td>
+                                                    <Button onClick={() => history.goBack()}>
+                                                        Continue Shopping
+                                                    </Button>
+                                                </td>
+                                                <td>
+                                                    <Button onClick={() => history.push('/payment')}>
+                                                        Checkout
+                                                    </Button>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                </table>
+                            </td>
                         </tr> 
-                    </tbody>
+ 
+                   </tbody>
                 </table>
                 ) : (
                     <p>

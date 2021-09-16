@@ -24,7 +24,7 @@ const ProductResults = ({ }) => {
     useEffect(() => {
         dispatch(
             fetchProductsStart({ filterType })
-        )
+        ) 
     },[ filterType ])
 
 
@@ -93,9 +93,6 @@ const ProductResults = ({ }) => {
                     const configProduct = {
                         ...product
                     }
-
-                    {/* const configProduct = product */}
-                    
 
                     return(
                         <Product key={pos} {...configProduct }/>

@@ -1,5 +1,5 @@
 import React from 'react'
-import {Link } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 import { signOutUserStart } from './../../redux/User/user.actions'
 import { selectCartItemsCount } from './../../redux/Cart/cart.selectors'
@@ -18,18 +18,18 @@ const mapState = (state) => ({
 
 const Header = props => {
     const dispatch = useDispatch()
-    const {currentUser, totalNumCartItems } = useSelector(mapState)
+    const { currentUser, totalNumCartItems } = useSelector(mapState)
 
     const signOut = () => {
         dispatch(signOutUserStart())
     }
 
-    return(
+    return (
         <header className="header">
             <div className="wrap">
                 <div className="logo">
                     <Link to="/">
-                        <img src={Logo} alt="LOGO"/>
+                        <img src={Logo} alt="LOGO" />
                     </Link>
                 </div>
 
@@ -51,20 +51,19 @@ const Header = props => {
                 <div className="callToActions">
 
                     <ul>
-
-                        <li>
+                        <li >
                             <Link to="/cart">
-                                Your Cart ({ totalNumCartItems })
+                                Your Cart ({totalNumCartItems})
                             </Link>
                         </li>
 
                         {currentUser && [
-                            <li>
+                            <li key={1}>
                                 <Link to="/dashboard">
                                     My Account
                                 </Link>
                             </li>,
-                            <li>
+                            <li key={2}>
                                 <span onClick={() => signOut()}>
                                     LogOut
                                 </span>
@@ -72,12 +71,12 @@ const Header = props => {
                         ]}
 
                         {!currentUser && [
-                            <li>
+                            <li key={1}>
                                 <Link to="/registration">
                                     Register
                                 </Link>
                             </li>,
-                            <li>
+                            <li key={2}>
                                 <Link to="/login">
                                     Login
                                 </Link>
@@ -91,8 +90,8 @@ const Header = props => {
     )
 }
 
-Header.defaultProps ={
-    currentUser : null
+Header.defaultProps = {
+    currentUser: null
 }
 
 

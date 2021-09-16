@@ -10,28 +10,29 @@ export const existingCartItem = ({
 export const handleAddToCart = ({
     prevCartItems,
     nextCartItem
-}) => {
-    const quantityIncrement = 1
-    const cartItemExists = existingCartItem({ prevCartItems, nextCartItem })
-
-    if(cartItemExists){
-        return prevCartItems.map(cartItem =>
-            cartItem.documentID == nextCartItem.documentID
-            ?{
-                ...cartItem,
-                quantity: cartItem.quantity + quantityIncrement
-            } : cartItem 
-        )
+  }) => {
+    const quantityIncrement = 1;
+    const cartItemExists = existingCartItem({ prevCartItems, nextCartItem });
+  
+    if (cartItemExists) {
+      return prevCartItems.map(cartItem =>
+        cartItem.documentID == nextCartItem.documentID
+          ? {
+            ...cartItem,
+            quantity: cartItem.quantity + quantityIncrement
+          } : cartItem
+      );
     }
-    
+  
     return [
-        ...prevCartItems,
-        {
-            ...nextCartItem,
-            quantity: quantityIncrement
-        }
-    ]
-}
+      ...prevCartItems,
+      {
+        ...nextCartItem,
+        quantity: quantityIncrement
+      }
+    ];
+  };
+  
 
 export const handleRemoveCartItem = ({
     prevCartItems,
